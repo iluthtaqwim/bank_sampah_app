@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:bank_sampah/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +17,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Code Land",
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: Container(
+        child: LoginPage(),
+      ),
       theme: ThemeData(accentColor: Colors.white70),
     );
   }
@@ -29,6 +33,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Text("INI main Page"),
+    );
   }
 }
