@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:bank_sampah/home.dart';
-import 'package:bank_sampah/main.dart';
+import 'package:bank_sampah/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wave/config.dart';
@@ -15,8 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
-  String BASE_URL =
-      "http://192.168.100.200/bank_sampah/api/authentication/login";
+  String BASE_URL = "http://192.168.1.14/bank_sampah/api/authentication/login";
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
       if (body != null) {
         sharedPreferences.setString("token", body['data']['token']);
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => Home()),
+            MaterialPageRoute(builder: (BuildContext context) => Landing()),
             (Route<dynamic> route) => false);
       }
     } else {
