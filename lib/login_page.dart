@@ -14,7 +14,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
-  String BASE_URL = "http://192.168.1.14/bank_sampah/api/authentication/login";
+  String BASE_URL =
+      "http://192.168.100.200/bank_sampah/api/authentication/login";
 
   @override
   Widget build(BuildContext context) {

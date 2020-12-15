@@ -26,44 +26,11 @@ class _TransaksiState extends State<Transaksi> {
                       width: 150,
                       image: AssetImage("assets/images/BS-white.png"),
                     ),
-                    Icon(
-                      Icons.notifications,
-                      color: Colors.white70,
-                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: 400),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Tabungan",
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Rp 70000",
-                            style: TextStyle(
-                              fontSize: 36.0,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
