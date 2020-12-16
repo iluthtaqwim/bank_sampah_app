@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bank_sampah/landing.dart';
+import 'package:bank_sampah/model/Session.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wave/config.dart';
@@ -98,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       body = json.decode(response.body);
       if (body != null) {
-        sharedPreferences.setString("token", body['data']['token']);
+        // sharedPreferences.setString("token", body['data']['token']);
+        Session.setLoginData(body["data"]);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => Landing()),
             (Route<dynamic> route) => false);

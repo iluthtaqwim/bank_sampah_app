@@ -22,7 +22,18 @@ class MyApp extends StatelessWidget {
       home: Container(
         child: SplashScreen(),
       ),
-      theme: ThemeData(accentColor: Colors.white70),
+      theme: ThemeData(
+          accentColor: Colors.white70,
+          brightness: Brightness.light,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline2: TextStyle(fontSize: 48.0, fontWeight: FontWeight.bold),
+            headline3: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            headline4: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            headline5: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300),
+            headline6: TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic),
+            bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          )),
     );
   }
 }

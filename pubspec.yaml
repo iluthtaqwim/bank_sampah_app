@@ -31,7 +31,7 @@ dependencies:
   wave: ^0.1.0
   http: any
   shared_preferences: any
-  flutter_svg: ^0.18.0
+  jwt_decoder: ^1.0.3
   nested: ^0.0.4
 
 dev_dependencies:
