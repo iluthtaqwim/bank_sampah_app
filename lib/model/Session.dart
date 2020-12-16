@@ -38,4 +38,9 @@ class Session {
     var session = Session.fromJsonMap(map).toJson();
     prefs.setString("login_json", jsonEncode(session));
   }
+
+  static logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
 }

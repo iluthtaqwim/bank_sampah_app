@@ -1,4 +1,5 @@
 import 'package:bank_sampah/home.dart';
+import 'package:bank_sampah/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bank_sampah/login_page.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/Login': (context) => LoginPage(),
         '/Home': (context) => Home(),
+        '/Landing': (context) => Landing()
       },
       title: "Code Land",
       debugShowCheckedModeBanner: false,

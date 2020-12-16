@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bank_sampah/model/Session.dart';
 import 'package:flutter/material.dart';
 import 'package:bank_sampah/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,11 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navLoginPage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var status = prefs.getBool('isLoggedIn') ?? false;
-    print(status);
-    if (status) {
-      Navigator.pushNamed(context, "/Home");
+    Session session = await Session.getSession();
+
+    if (session.token.isNotEmpty) {
+      Navigator.pushNamed(context, "/Landing");
     } else {
       Navigator.pushNamed(context, "/Login");
     }

@@ -11,10 +11,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Future<Map<String, dynamic>> getDataFromToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    // print(decodedToken['nama_nasabah']);
+    Session session = await Session.getSession();
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(session.token);
     return decodedToken;
   }
 
