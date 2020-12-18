@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
               child: TextFormField(
                 controller: usernameController,
-                cursorColor: Colors.white,
+                cursorColor: Colors.black,
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   icon: Icon(Icons.account_circle, color: Colors.black),
@@ -187,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
               child: TextFormField(
                 controller: passwordController,
-                cursorColor: Colors.white,
+                cursorColor: Colors.black,
                 obscureText: true,
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(

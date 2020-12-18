@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:bank_sampah/model/Session.dart';
 import 'package:bank_sampah/model/articles.dart';
 import 'package:bank_sampah/model/source.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,6 +17,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _index = 0;
   Future<List<Articles>> articleFutures;
+
+  Future<Map<String, dynamic>> getDataFromToken() async {
+    Session session = await Session.getSession();
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(session.token);
+    print(decodedToken);
+    return decodedToken;
+  }
 
   Future<List<Articles>> fetchArticles() async {
     final response = await http.get(
@@ -75,16 +85,23 @@ class _HomeState extends State<Home> {
                           Text(
                             "Tabungan",
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                                fontSize: 20.0, fontWeight: FontWeight.w400),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Rp 70000",
-                              style: TextStyle(
-                                fontSize: 36.0,
-                                fontWeight: FontWeight.w300,
-                              ),
+                            child: FutureBuilder(
+                              future: getDataFromToken(),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  "Rp " +
+                                      snapshot.data['total_tabungan']
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 36.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ],
