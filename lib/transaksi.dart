@@ -44,7 +44,7 @@ class _TransaksiState extends State<Transaksi> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        child: Column(
+        child: Stack(
           children: [
             Image(
               image: AssetImage('assets/images/Wave-100s-1036px.png'),
@@ -55,14 +55,59 @@ class _TransaksiState extends State<Transaksi> {
                   if (snapshot.hasData) {
                     List<TransaksiModel> list = snapshot.data;
                     print(snapshot.data.length);
-                    print(list.length);
-                    return ListView.builder(
-                        itemCount: list.length,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Text(list[index].jenis_sampah);
-                        });
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 40),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Histori Transaksi",
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Card(
+                            color: Colors.white60,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Riwayat Transaksi"),
+                                      Text("sada")
+                                    ],
+                                  ),
+                                ),
+                                ListView.builder(
+                                    itemCount: list.length,
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return Card(
+                                        child: ListTile(
+                                          title: Text(list[index].jenis_sampah),
+                                          subtitle: Text(list[index].harga),
+                                          dense: true,
+                                          isThreeLine: true,
+                                          trailing:
+                                              Text(list[index].berat_sampah),
+                                        ),
+                                      );
+                                    }),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   } else if (snapshot.hasError) {
                     print("ikut apa yang diomongin");
                   }

@@ -93,9 +93,7 @@ class _HomeState extends State<Home> {
                               future: getDataFromToken(),
                               builder: (context, snapshot) {
                                 return Text(
-                                  "Rp " +
-                                      snapshot.data['total_tabungan']
-                                          .toString(),
+                                  "Rp " + snapshot.data['total_tabungan'],
                                   style: TextStyle(
                                     fontSize: 36.0,
                                     fontWeight: FontWeight.bold,
@@ -216,20 +214,6 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class QrCode extends StatefulWidget {
-  @override
-  _QrCodeState createState() => _QrCodeState();
-}
-
-class _QrCodeState extends State<QrCode> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text("QrCode"),
     );
   }
 }

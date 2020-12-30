@@ -37,11 +37,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navLoginPage() async {
-    Session session = await Session.getSession();
-
-    if (session.token.isNotEmpty) {
-      Navigator.pushNamed(context, "/Landing");
-    } else {
+    try {
+      Session session = await Session.getSession();
+      print(session);
+      if (session.token.isNotEmpty) {
+        Navigator.pushNamed(context, "/Landing");
+      } else {
+        Navigator.pushNamed(context, "/Login");
+      }
+    } catch (_) {
       Navigator.pushNamed(context, "/Login");
     }
   }

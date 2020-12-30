@@ -27,6 +27,7 @@ class Session {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var json = prefs.getString("login_json");
+      print(json);
       return Session.fromJsonMap(jsonDecode(json));
     } on Exception catch (_) {
       throw Exception('error');

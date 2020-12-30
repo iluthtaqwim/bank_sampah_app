@@ -1,6 +1,7 @@
 import 'package:bank_sampah/home.dart';
 import 'package:flutter/material.dart';
 import 'package:bank_sampah/profile.dart';
+import 'package:bank_sampah/qrcode.dart';
 import 'package:bank_sampah/transaksi.dart';
 
 class Landing extends StatefulWidget {
