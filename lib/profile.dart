@@ -1,7 +1,8 @@
 import 'package:bank_sampah/model/Session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bank_sampah/login_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class Profile extends StatefulWidget {
@@ -14,6 +15,21 @@ class _ProfileState extends State<Profile> {
     Session session = await Session.getSession();
     Map<String, dynamic> decodedToken = JwtDecoder.decode(session.token);
     return decodedToken;
+  }
+
+  FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  void onLogout() {
+    setState(() {
+      Session.logout();
+    });
   }
 
   @override
@@ -89,16 +105,49 @@ class _ProfileState extends State<Profile> {
                         (Icon(Icons.arrow_forward_ios_rounded))
                       ],
                     ),
+                  ),
+                  RaisedButton(
+                    onPressed: () => {
+                      onLogout(),
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => LoginPage()),
+                          (Route<dynamic> route) => false)
+                    },
+                    color: Colors.pinkAccent,
+                    child: Text('Sign out'),
                   )
                 ],
               ),
             ),
           );
         } else if (snapshot.hasError) {
-          return Text('error');
+          return _showToast('Error');
         }
-        return Text("Error");
+        return Container(
+          child: _showToast('Error'),
+        );
       },
     );
   }
+}
+
+_showToast(text) {
+  Widget toast = Container(
+    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(25.0),
+      color: Colors.greenAccent,
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.check),
+        SizedBox(
+          width: 12.0,
+        ),
+        Text(text),
+      ],
+    ),
+  );
 }

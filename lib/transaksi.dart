@@ -70,9 +70,9 @@ class _TransaksiState extends State<Transaksi> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Card(
-                            color: Colors.white60,
+                            color: Colors.white70,
                             child: Column(
                               children: [
                                 Padding(
@@ -82,7 +82,6 @@ class _TransaksiState extends State<Transaksi> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Riwayat Transaksi"),
-                                      Text("sada")
                                     ],
                                   ),
                                 ),
@@ -93,12 +92,18 @@ class _TransaksiState extends State<Transaksi> {
                                     itemBuilder: (context, index) {
                                       return Card(
                                         child: ListTile(
+                                          leading: Text(
+                                            list[index].berat_sampah + " Kg",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline3,
+                                          ),
                                           title: Text(list[index].jenis_sampah),
-                                          subtitle: Text(list[index].harga),
+                                          subtitle: Text(
+                                              list[index].tanggal_transaksi),
                                           dense: true,
                                           isThreeLine: true,
-                                          trailing:
-                                              Text(list[index].berat_sampah),
+                                          trailing: Text(list[index].harga),
                                         ),
                                       );
                                     }),
@@ -111,9 +116,11 @@ class _TransaksiState extends State<Transaksi> {
                   } else if (snapshot.hasError) {
                     print("ikut apa yang diomongin");
                   }
-                  return CircularProgressIndicator(
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+                  return Center(
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+                    ),
                   );
                 })
           ],

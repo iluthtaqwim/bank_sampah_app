@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:bank_sampah/berita.dart';
 import 'package:bank_sampah/model/Session.dart';
 import 'package:bank_sampah/model/articles.dart';
 import 'package:bank_sampah/model/source.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -16,12 +16,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _index = 0;
+  String posturl;
   Future<List<Articles>> articleFutures;
+  Future<Map<String, dynamic>> getFromToken;
 
   Future<Map<String, dynamic>> getDataFromToken() async {
     Session session = await Session.getSession();
     Map<String, dynamic> decodedToken = JwtDecoder.decode(session.token);
-    print(decodedToken);
     return decodedToken;
   }
 
@@ -41,6 +42,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     articleFutures = fetchArticles();
+    getFromToken = getDataFromToken();
   }
 
   @override
@@ -87,19 +89,21 @@ class _HomeState extends State<Home> {
                             style: TextStyle(
                                 fontSize: 20.0, fontWeight: FontWeight.w400),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: FutureBuilder(
-                              future: getDataFromToken(),
-                              builder: (context, snapshot) {
-                                return Text(
-                                  "Rp " + snapshot.data['total_tabungan'],
-                                  style: TextStyle(
-                                    fontSize: 36.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                );
-                              },
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FutureBuilder(
+                                future: getFromToken,
+                                builder: (context, snapshot) {
+                                  return Text(
+                                    "Rp " + snapshot.data['total_tabungan'],
+                                    style: TextStyle(
+                                      fontSize: 36.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -117,26 +121,36 @@ class _HomeState extends State<Home> {
                         decoration: TextDecoration.underline),
                   ),
                 ),
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                        height: 180,
-                        child: FutureBuilder(
-                          future: articleFutures,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              print(snapshot.data);
-                              return PageView.builder(
-                                itemCount: snapshot.data.length,
-                                controller:
-                                    PageController(viewportFraction: 0.7),
-                                onPageChanged: (int i) =>
-                                    setState(() => _index = i),
-                                itemBuilder: (context, index) {
-                                  Articles article = snapshot.data[index];
-                                  Source source = article.source;
-                                  return Transform.scale(
-                                    scale: index == _index ? 1 : 0.9,
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: SizedBox(
+                    height: 180,
+                    child: Container(
+                      child: FutureBuilder(
+                        future: articleFutures,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return PageView.builder(
+                              itemCount: snapshot.data.length,
+                              controller: PageController(viewportFraction: 0.7),
+                              onPageChanged: (int i) =>
+                                  setState(() => _index = i),
+                              itemBuilder: (context, index) {
+                                Articles article = snapshot.data[index];
+                                Source source = article.source;
+                                return Transform.scale(
+                                  scale: index == _index ? 1 : 0.9,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      var url = article.url;
+                                      Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              new Berita(url),
+                                        ),
+                                      );
+                                    },
                                     child: Card(
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
@@ -150,7 +164,7 @@ class _HomeState extends State<Home> {
                                               padding: const EdgeInsets.only(
                                                   bottom: 4.0),
                                               child: Text(
-                                                article.title,
+                                                article.title ?? "",
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -165,7 +179,8 @@ class _HomeState extends State<Home> {
                                                       const EdgeInsets.only(
                                                           bottom: 2.0),
                                                   child: Text(
-                                                    "Sumber :" + source.name,
+                                                    "Sumber :" + source.name ??
+                                                        "",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w300,
@@ -174,41 +189,44 @@ class _HomeState extends State<Home> {
                                                 ),
                                               ],
                                             ),
-                                            Image(
-                                              image: Image.network(snapshot
-                                                      .data[index].urlToImage)
-                                                  .image,
+                                            CachedNetworkImage(
+                                              imageUrl: snapshot
+                                                  .data[index].urlToImage,
                                               height: 100,
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                              // return ListView.builder(
-                              //     scrollDirection: Axis.horizontal,
-                              //     itemCount: snapshot.data.length,
-                              //     itemBuilder: (context, index) {
-                              //       return Text(snapshot.data[index].title);
-
-                            } else if (snapshot.hasError) {
-                              print("error: ${snapshot.error}");
-                            }
-
-                            return Center(
-                              child: SizedBox(
-                                width: 30,
-                                height: 30,
-                                child: CircularProgressIndicator(
-                                  valueColor: new AlwaysStoppedAnimation<Color>(
-                                      Colors.pinkAccent),
-                                ),
-                              ),
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        )))
+                            // return ListView.builder(
+                            //     scrollDirection: Axis.horizontal,
+                            //     itemCount: snapshot.data.length,
+                            //     itemBuilder: (context, index) {
+                            //       return Text(snapshot.data[index].title);
+
+                          } else if (snapshot.hasError) {
+                            print("error: ${snapshot.error}");
+                          }
+
+                          return Center(
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    Colors.pinkAccent),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
