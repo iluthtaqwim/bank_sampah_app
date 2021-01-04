@@ -89,33 +89,36 @@ class _ProfileState extends State<Profile> {
                       color: Colors.black12,
                     ),
                   ),
+                  // Container(
+                  //   padding: EdgeInsets.all(20.0),
+                  //   width: double.infinity,
+                  //   child: Text(
+                  //     "Akun",
+                  //     style: Theme.of(context).textTheme.headline4,
+                  //   ),
+                  // ),
+                  // Container(
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(Icons.edit_rounded),
+                  //       Text("Ubah Profil"),
+                  //       (Icon(Icons.arrow_forward_ios_rounded))
+                  //     ],
+                  //   ),
+                  // ),
                   Container(
-                    padding: EdgeInsets.all(20.0),
-                    width: double.infinity,
-                    child: Text(
-                      "Akun",
-                      style: Theme.of(context).textTheme.headline4,
+                    padding: EdgeInsets.all(10),
+                    child: RaisedButton(
+                      onPressed: () => {
+                        onLogout(),
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => LoginPage()),
+                            (Route<dynamic> route) => false)
+                      },
+                      color: Colors.pinkAccent,
+                      child: Text('Sign out'),
                     ),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Icon(Icons.edit_rounded),
-                        Text("Ubah Profil"),
-                        (Icon(Icons.arrow_forward_ios_rounded))
-                      ],
-                    ),
-                  ),
-                  RaisedButton(
-                    onPressed: () => {
-                      onLogout(),
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => LoginPage()),
-                          (Route<dynamic> route) => false)
-                    },
-                    color: Colors.pinkAccent,
-                    child: Text('Sign out'),
                   )
                 ],
               ),

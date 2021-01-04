@@ -27,7 +27,7 @@ class _QrCodeState extends State<QrCode> {
         child: FutureBuilder(
           future: getDataFromToken(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data['qr_code'] != null) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

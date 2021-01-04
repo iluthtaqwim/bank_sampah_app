@@ -49,80 +49,92 @@ class _TransaksiState extends State<Transaksi> {
             Image(
               image: AssetImage('assets/images/Wave-100s-1036px.png'),
             ),
-            FutureBuilder(
-                future: historiTransaksi(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<TransaksiModel> list = snapshot.data;
-                    print(snapshot.data.length);
-                    return Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 40),
-                          child: Row(
+            Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Histori Transaksi",
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ],
+                  ),
+                ),
+                // Container(
+                //   padding: EdgeInsets.symmetric(horizontal: 20),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text("Riwayat Transaksi"),
+                //     ],
+                //   ),
+                // ),
+                Expanded(
+                  child: FutureBuilder(
+                      future: historiTransaksi(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<TransaksiModel> list = snapshot.data;
+                          print(snapshot.data.length);
+                          return ListView(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
                             children: [
-                              Text(
-                                "Histori Transaksi",
-                                style: Theme.of(context).textTheme.headline3,
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                        physics: ScrollPhysics(),
+                                        itemCount: list.length,
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return Column(
+                                            children: [
+                                              Card(
+                                                child: ListTile(
+                                                  leading: Text(
+                                                    list[index].berat_sampah +
+                                                        " Kg",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline3,
+                                                  ),
+                                                  title: Text(
+                                                      list[index].jenis_sampah),
+                                                  subtitle: Text(list[index]
+                                                      .tanggal_transaksi),
+                                                  dense: true,
+                                                  isThreeLine: true,
+                                                  trailing: Text("Rp " +
+                                                      list[index].harga),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                  ],
+                                ),
                               ),
                             ],
+                          );
+                        } else if (snapshot.hasError) {
+                          print("ikut apa yang diomongin");
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                Colors.pinkAccent),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Card(
-                            color: Colors.white70,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Riwayat Transaksi"),
-                                    ],
-                                  ),
-                                ),
-                                ListView.builder(
-                                    itemCount: list.length,
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                        child: ListTile(
-                                          leading: Text(
-                                            list[index].berat_sampah + " Kg",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3,
-                                          ),
-                                          title: Text(list[index].jenis_sampah),
-                                          subtitle: Text(
-                                              list[index].tanggal_transaksi),
-                                          dense: true,
-                                          isThreeLine: true,
-                                          trailing: Text(list[index].harga),
-                                        ),
-                                      );
-                                    }),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    print("ikut apa yang diomongin");
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
-                    ),
-                  );
-                })
+                        );
+                      }),
+                ),
+              ],
+            )
           ],
         ),
       ),

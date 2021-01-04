@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         '/Home': (context) => Home(),
         '/Landing': (context) => Landing()
       },
-      title: "Code Land",
+      title: "Bank Sampah",
       debugShowCheckedModeBanner: false,
       home: Container(
         child: SplashScreen(),
