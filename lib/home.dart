@@ -20,7 +20,8 @@ class _HomeState extends State<Home> {
   int _index = 0;
   bool _isLoading = true;
   String posturl;
-  String BASE_URL = 'http://192.168.100.200/bank_sampah/api/nasabah/tabungan';
+  String BASE_URL =
+      'https://karangtarunapelangi.000webhostapp.com/api/nasabah/tabungan';
 
   Future<String> getDataFromId() async {
     Session session = await Session.getSession();

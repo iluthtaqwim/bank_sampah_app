@@ -13,7 +13,7 @@ class Transaksi extends StatefulWidget {
 
 class _TransaksiState extends State<Transaksi> {
   var BASE_URL =
-      'http://192.168.100.200/bank_sampah/api/transaksi/transaksi_nasabah';
+      'https://karangtarunapelangi.000webhostapp.com/api/transaksi/transaksi_nasabah';
 
   Future<String> getDataFromToken() async {
     Session session = await Session.getSession();
@@ -33,7 +33,6 @@ class _TransaksiState extends State<Transaksi> {
       List<dynamic> list = body["person"] as List<dynamic>;
       List<TransaksiModel> trx =
           list.map((e) => TransaksiModel.fromJsonMap(e)).toList();
-
       return trx;
     }
 
@@ -77,7 +76,7 @@ class _TransaksiState extends State<Transaksi> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List<TransaksiModel> list = snapshot.data;
-                          print(snapshot.data.length);
+
                           return ListView(
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
@@ -98,20 +97,26 @@ class _TransaksiState extends State<Transaksi> {
                                               Card(
                                                 child: ListTile(
                                                   leading: Text(
-                                                    list[index].berat_sampah +
+                                                    list[index]
+                                                            .berat_sampah
+                                                            .toString() +
                                                         " Kg",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .headline3,
                                                   ),
-                                                  title: Text(
-                                                      list[index].jenis_sampah),
+                                                  title: Text(list[index]
+                                                      .jenis_sampah
+                                                      .toString()),
                                                   subtitle: Text(list[index]
-                                                      .tanggal_transaksi),
+                                                      .tanggal_transaksi
+                                                      .toString()),
                                                   dense: true,
                                                   isThreeLine: true,
                                                   trailing: Text("Rp " +
-                                                      list[index].harga),
+                                                      list[index]
+                                                          .harga
+                                                          .toString()),
                                                 ),
                                               ),
                                             ],

@@ -15,68 +15,84 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
+  bool _failed = false;
   String BASE_URL =
-      "http://192.168.100.200/bank_sampah/api/authentication/login";
+      "https://karangtarunapelangi.000webhostapp.com/api/authentication/login";
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Stack(
-        children: [
-          WaveWidget(
-            config: CustomConfig(
-              colors: [
-                Colors.white70,
-                Colors.white54,
-                Colors.white30,
-                Colors.white24,
-              ],
-              durations: [22000, 15000, 10000, 5000],
-              heightPercentages: [0.45, 0.46, 0.48, 0.41],
-              blur: MaskFilter.blur(BlurStyle.solid, 5.0),
-            ),
-            size: Size(
-              double.infinity,
-              double.infinity,
-            ),
-            backgroundColor: Colors.pinkAccent,
-          ),
-          ListView(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 80, 0, 20),
-                child: Center(
-                  child: Image(
-                    width: 200,
-                    image: AssetImage("assets/images/BS-white.png"),
-                  ),
-                ),
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            WaveWidget(
+              config: CustomConfig(
+                colors: [
+                  Colors.white70,
+                  Colors.white54,
+                  Colors.white30,
+                  Colors.white24,
+                ],
+                durations: [22000, 15000, 10000, 5000],
+                heightPercentages: [0.45, 0.46, 0.48, 0.41],
+                blur: MaskFilter.blur(BlurStyle.solid, 5.0),
               ),
-              textSection(),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 80.0),
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20.0),
+              size: Size(
+                double.infinity,
+                double.infinity,
+              ),
+              backgroundColor: Colors.pinkAccent,
+            ),
+            ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 80, 0, 20),
+                  child: Center(
+                    child: Image(
+                      width: 200,
+                      image: AssetImage("assets/images/BS-white.png"),
                     ),
                   ),
-                  textColor: Colors.black,
-                  color: Colors.pinkAccent,
-                  onPressed: () {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    signIn(usernameController.text, passwordController.text);
-                  },
-                  child: Center(
-                    child: Text('Sign In'),
-                  ),
                 ),
-              )
-            ],
-          ),
-        ],
+                textSection(),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 80.0),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                    ),
+                    textColor: Colors.black,
+                    color: Colors.pinkAccent,
+                    onPressed: usernameController.text == "" ||
+                            passwordController.text == ""
+                        ? null
+                        : () {
+                            setState(() {
+                              _isLoading = true;
+                            });
+
+                            signIn(usernameController.text,
+                                passwordController.text);
+                          },
+                    child: Center(
+                      child: Text('Sign In'),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            if (_isLoading == true)
+              Stack(
+                children: [
+                  Center(
+                    child: Loading(),
+                  )
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -104,14 +120,16 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => Landing()),
             (Route<dynamic> route) => false);
+      } else {
+        print('no data was found');
       }
-    } else {
-      print("login failed");
-    }
 
-    setState(() {
-      _isLoading = false;
-    });
+      return print(response.body);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Container buttonSection() {
@@ -126,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                 ? null
                 : () {
                     setState(() {
-                      _isLoading = true;
+                      _isLoading = false;
                     });
                     // signIn(usernameController.text, passwordController.text);
                   },
@@ -140,6 +158,10 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController usernameController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
+  Widget Loading() {
+    return CircularProgressIndicator();
+  }
 
   Container textSection() {
     return Container(
